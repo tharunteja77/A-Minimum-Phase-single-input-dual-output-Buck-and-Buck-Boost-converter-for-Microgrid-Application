@@ -167,12 +167,12 @@ Add prototype images:
 ```
 images/prototype.png
 ```
-![Image Name](images/prorotype.jpeg)
+![Image Name](images/prorotype.png)
 ```
 images/gate_driver.png
 ```
 ### Gate Drivers
-![Image Name](images/gate_driver.jpeg)
+![Image Name](images/gate_driver.png)
 
 
 ---
