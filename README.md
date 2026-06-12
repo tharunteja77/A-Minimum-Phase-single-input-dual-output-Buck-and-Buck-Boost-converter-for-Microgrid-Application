@@ -167,7 +167,7 @@ Add prototype images:
 ```
 images/prototype.png
 ```
-![Image Name](images/prorotype.png)
+![Image Name](images/prototype.png)
 ```
 images/gate_driver.png
 ```
