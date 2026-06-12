@@ -1,121 +1,378 @@
-# A Minimum Phase Single-Input Dual-Output Buck and Buck–Boost DC-DC Converter for DC Microgrid application
+# Minimum-Phase Single-Input Dual-Output Buck and Buck–Boost DC–DC Converter for DC Microgrid Application
 
-This repository contains MATLAB/Simulink modeling, simulation, and controller design for a **minimum-phase dual-output DC–DC converter** based on the IEEE paper:
+This repository contains the complete reproduction, analysis, simulation, controller improvement, and hardware validation of a **minimum-phase single-input dual-output (SIDO) DC–DC converter** based on the IEEE research paper:
 
 **“Dual-Output Classic Buck and Buck–Boost Converter with Fast Dynamic Response”**
 
-The converter produces:
-- **Positive Buck Output**
-- **Negative Buck–Boost Output**
+The converter generates two regulated DC outputs from a single DC source:
 
-from a **single DC input**, using two duty cycles *(D and d₁)*.
+- Positive Buck Output
+- Negative Buck–Boost Output
 
-This work is part of my **B.Tech Project (BTP)** at **IIT Patna**, under the supervision of **Dr. Bussa Vinod Kumar**.
-## 🚀 Project Overview
+using two independent duty control parameters:
 
-The objective of this project is to:
+- Main duty cycle **D**
+- Secondary duty cycle **d₁**
 
-- Understand the converter operation and switching modes  
-- Derive plant transfer functions via small-signal state-space modeling  
-- Reproduce the converter's behavior through open-loop simulations  
-- Implement **PI–Lead compensators** for closed-loop control  
-- Validate performance under input, load, and reference variations  
-
-The converter eliminates the **Right-Half-Plane Zero (RHPZ)** in the buck–boost output, achieving **minimum-phase behavior** and improved transient performance.
-
-## ⚡ Features Implemented
-### ✔ 1. Open-Loop Converter Simulation
-- Full switching-cycle analysis (three modes)
-- Inductor, diode, and switch current waveforms
-- Validation of theoretical voltage gains:
-  - Buck Output: **Mo₁ = D**
-  - Buck–Boost Output: **Mo₂ = D / (1 − D − d₁)**
-
----
-   
-
-### ✔ 2. Small-Signal Modeling & Transfer Functions
-Derived transfer functions:
-- **G_vov** — input-to-output
-- **G_vod** — duty-to-output
-
-Confirmed:
-- Buck output is minimum-phase  
-- Buck–Boost output has **no RHP zero**
+This work was completed as my **B.Tech Project (BTP)** at **Indian Institute of Technology Patna**, under the supervision of **Dr. Bussa Vinod Kumar**.
 
 ---
 
-### ✔ 3. Closed-Loop Control Using PI–Lead Compensators
-Separate PI–Lead controllers were designed for:
+# Project Objective
 
-#### ➤ Buck Output
-- Crossover frequency ≈ **1.7 kHz**  
-- Phase margin ≈ **30°**
+The objective of this work is not only to reproduce the IEEE paper results but also to perform an extensive analysis and improve the converter performance.
 
-#### ➤ Buck–Boost Output
-- Crossover frequency ≈ **500 Hz**  
-- Phase margin ≈ **30°**
+The project includes:
 
-Benefits:
-- Faster transient response  
-- Improved phase margin  
-- Zero steady-state error  
+- Understanding converter operation and switching states
+- Mathematical modeling using state-space averaging
+- Deriving small-signal transfer functions
+- MATLAB/Simulink based open-loop verification
+- Closed-loop controller design and comparison
+- Improving dynamic response using advanced compensation techniques
+- Hardware implementation and experimental verification
+
+The proposed converter removes the traditional **Right-Half-Plane Zero (RHPZ)** problem present in conventional buck–boost converters, resulting in:
+
+- Minimum-phase behavior
+- Faster dynamic response
+- Easier controller design
+- Better transient performance
 
 ---
 
-### ✔ 4. Closed-Loop Validation
-Tested under:
+# Converter Specifications
 
-- **Input voltage variation**  
-- **Reference voltage steps**  
-- **Load disturbances**  
+## Open-Loop Experimental Parameters
 
-System maintained stable and accurate voltage regulation.
+The following parameters were used for simulation and hardware verification.
+
+| Parameter | Value |
+|---|---|
+| Input Voltage (Vin) | 12 V / 24 V |
+| Inductor L1 | 2 mH |
+| Inductor L2 | 500 µH |
+| Output Capacitors C01, C02 | 47 µF |
+| Switching Frequency | 50 kHz |
+| Output Resistance (Buck) | 100 Ω |
+| Output Resistance (Buck–Boost) | 100 Ω |
+| Main Duty Cycle D | 0.5 |
+| Secondary Duty Cycle d₁ | 0.2 |
+
+---
+
+# Theoretical Voltage Gain Verification
+
+## Buck Output
+
+The buck output voltage gain:
+
+```math
+M_{o1}=D
+```
+
+For:
+
+- Vin = 12 V
+
+```math
+V_{o1}=0.5 \times 12 = 6V
+```
+
+- Vin = 24 V
+
+```math
+V_{o1}=0.5 \times 24 = 12V
+```
+
+---
+
+## Buck–Boost Output
+
+Voltage conversion ratio:
+
+```math
+M_{o2}= \frac{D}{1-D-d_1}
+```
+
+For Vin = 12 V:
+
+```math
+V_{o2}=\frac{0.5 \times 12}{1-0.5-0.2}=20V
+```
+
+For Vin = 24 V:
+
+```math
+V_{o2}=\frac{0.5 \times 24}{1-0.5-0.2}=40V
+```
+
+The obtained experimental results closely matched the theoretical calculations.
+
+---
+
+# Simulation Based Verification
+
+## 1. Open-Loop Converter Simulation
+
+Implemented complete switching model in MATLAB/Simulink.
+
+Verified:
+
+- Three operating modes
+- Inductor charging/discharging behavior
+- MOSFET switching operation
+- Diode current characteristics
+- Capacitor voltage balancing
+- Output voltage gain equations
 
 
-## 🔧 Software Requirements
+Validated converter gains:
 
-- MATLAB R2021b or later  
-- Simulink  
-- Control System Toolbox  
+Buck:
+
+```math
+M_{o1}=D
+```
+
+Buck–Boost:
+
+```math
+M_{o2}=\frac{D}{1-D-d_1}
+```
+
+Simulation results successfully reproduced the IEEE paper.
+
+---
+
+# Hardware Implementation
+
+A hardware prototype was developed to experimentally validate the converter operation.
+
+Implementation includes:
+
+- Power stage design
+- MOSFET based switching circuit
+- Dual inductor energy transfer system
+- Gate driver implementation
+- Output filtering stage
+- Experimental waveform verification
 
 
-## 🧠 Learning Outcomes
+## Hardware Prototype
 
-- State-space modeling of power electronic converters  
-- Deriving transfer functions from averaged models  
-- Stability analysis using Bode plots  
-- Designing PI–Lead compensators  
-- Implementing dual-output control loops  
-- Understanding RHPZ elimination techniques  
-- Building full MATLAB/Simulink workflows
+Add prototype images:
+
+### Prototype Board
+```
+images/prototype.png
+```
+![Image Name](images/prorotype.jpeg)
+```
+images/gate_driver.png
+```
+### Gate Drivers
+![Image Name](images/gate_driver.jpeg)
 
 
-## 📘 Reference Paper
+---
 
-Hasanpour, S., Mostaan, A., & Haghighi, S. K. S. (2024).  
-**Dual-Output Classic Buck and Buck–Boost Converter with Fast Dynamic Response**.  
+# PCB Design and 3D Modeling
+
+The complete converter hardware was designed using **KiCad EDA**.
+
+Implemented:
+
+- Circuit schematic design
+- PCB layout design
+- Component footprint selection
+- Power routing considerations
+- 3D visualization
+
+
+## KiCad Schematic
+
+```
+images/kicad_schematic.png
+```
+
+![KiCad Schematic](images/kicad_schematic.png)
+
+
+## KiCad 3D Model
+
+```
+images/kicad_3d_model.png
+```
+
+![KiCad Schematic](images/kicad_3d_model.png)
+
+---
+
+# Small Signal Modeling and Transfer Function Analysis
+
+Using state-space averaging, the converter transfer functions were derived.
+
+Analyzed:
+
+## Input-to-output transfer function
+
+```math
+G_{vov}
+```
+
+## Duty-to-output transfer function
+
+```math
+G_{vod}
+```
+
+Verified:
+
+- Buck output stability
+- Buck–Boost minimum-phase behavior
+- Absence of RHP zero
+- Improved controllability compared with traditional converters
+
+---
+
+# Controller Design and Improvement
+
+## IEEE Paper Implementation
+
+The reference paper implemented a:
+
+- PI Controller
+
+The PI controller successfully regulates the output voltage but has limitations:
+
+- Slower transient response
+- Higher settling time
+- Limited phase improvement
+
+
+---
+
+# Proposed Improvement: PI–Lead Controller
+
+As an improvement over the IEEE paper, a **PI–Lead compensator** was designed.
+
+Separate controllers were developed for both outputs.
+
+## Buck Output Controller
+
+Designed parameters:
+
+- Crossover frequency ≈ 1.7 kHz
+- Phase margin ≈ 30°
+
+## Buck–Boost Output Controller
+
+Designed parameters:
+
+- Crossover frequency ≈ 500 Hz
+- Phase margin ≈ 30°
+
+Advantages compared with PI controller:
+
+✔ Faster transient response  
+✔ Improved stability margin  
+✔ Reduced settling time  
+✔ Better dynamic behavior  
+✔ Zero steady-state error  
+
+The designed PI–Lead controller achieved better performance compared with the controller reported in the reference paper.
+
+---
+
+# Closed-Loop Testing
+
+The controller performance was verified under:
+
+## Input Voltage Variation
+
+Checked converter response for sudden source changes.
+
+## Reference Voltage Tracking
+
+Verified output voltage tracking capability.
+
+## Load Disturbance Test
+
+Validated robustness during load variations.
+
+
+Results:
+
+- Stable voltage regulation
+- Improved transient response
+- Fast recovery
+- Minimum overshoot
+
+---
+
+# Software and Tools Used
+
+## Simulation
+
+- MATLAB R2021b+
+- Simulink
+- Control System Toolbox
+
+## Hardware Design
+
+- KiCad EDA
+- PCB Design Tools
+- Digital Oscilloscope
+- Function Generator
+- DC Power Supply
+
+
+---
+
+# Key Learning Outcomes
+
+- DC–DC converter modeling
+- State-space averaging technique
+- Small-signal analysis
+- Transfer function derivation
+- Stability analysis using Bode plots
+- Power electronics hardware design
+- PCB schematic and layout development
+- Controller design and optimization
+- MATLAB to hardware workflow
+
+---
+
+# Future Scope
+
+- Complete PCB fabrication
+- High power testing
+- Efficiency optimization
+- Digital controller implementation using STM32/DSP
+- MPPT integration for renewable applications
+- DC microgrid integration
+
+---
+
+# Reference Paper
+
+Hasanpour, S., Mostaan, A., & Haghighi, S. K. S. (2024).
+
+**Dual-Output Classic Buck and Buck–Boost Converter with Fast Dynamic Response**
+
 IEEE Journal of Emerging and Selected Topics in Industrial Electronics.
 
+---
 
-## 🛠️ Future Work
-
-- Hardware prototype development  
-- Component selection (MOSFETs, inductors, capacitors)  
-- Controller implementation on STM32 / DSP / Arduino  
-- Real-time testing and efficiency measurement  
-- Comparison with simulation results  
-
-
-## 📄 License
-
-This project is released under the **MIT License**.  
-You are free to use, modify, and distribute the code.
-
-## ⭐ Author
+# Author
 
 **Y. Tharun Teja**  
 B.Tech Electrical Engineering  
 Indian Institute of Technology Patna  
 
+---
 
+# License
+
+Released under the MIT License.
