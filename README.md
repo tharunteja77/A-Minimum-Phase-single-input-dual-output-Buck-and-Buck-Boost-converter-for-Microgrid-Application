@@ -207,6 +207,12 @@ images/kicad_3d_model.png
 
 ![KiCad Schematic](images/kicad_3d_model.png)
 
+## Interactive 3D PCB Model
+
+View and rotate the complete KiCad PCB model:
+
+[Open Interactive 3D PCB Model](3D_prototype.glb)
+
 ---
 
 # Small Signal Modeling and Transfer Function Analysis
